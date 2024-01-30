@@ -5,7 +5,7 @@ const program: Command = new Command();
 program
     .version("1.0.0")
     .option("--accessToken <value>", "Token to use for Azure DevOps access.")
-    .option("--organization <value>", "Organization that holds your project")
+    .option("--organizationUri <value>", "Organization URI that holds your project")
     .option("--projectName <value>", "Name of the team project.")
     .option("--releaseId <value>", "Release with the items to tag.")
     .parse(process.argv);
@@ -16,7 +16,7 @@ if (!options.accessToken) {
     throw "No access token supplied.";
 }
 
-if (!options.releaseId) {
+if (!options.organizationUri) {
     throw "No organization name supplied.";
 }
 
@@ -28,7 +28,7 @@ if (!options.releaseId) {
     throw "No release id supplied.";
 }
 
-Tagger.build(options.accessToken, options.organization)
+Tagger.build(options.accessToken, options.organizationUri)
     .then(tagger => {
         tagger.tagItemsInRelease(options.projectName, options.releaseId)
             .then(_ => console.log("Work items successfully tagged;"));

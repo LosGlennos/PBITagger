@@ -8,14 +8,14 @@ export default class Tagger {
     releaseClient: ReleaseApi;
     workItemClient: WorkItemTrackingApi;
     
-    public static async build(accessToken: string, organization: string): Promise<Tagger> {
-        let tagger = await new Tagger().init(accessToken, organization);
+    public static async build(accessToken: string, organizationUri: string): Promise<Tagger> {
+        let tagger = await new Tagger().init(accessToken, organizationUri);
         return tagger;
     }
     
-    public async init(accessToken: string, organization: string): Promise<Tagger> {
+    public async init(accessToken: string, organizationUri: string): Promise<Tagger> {
         let authHandler: IRequestHandler = azdev.getPersonalAccessTokenHandler(accessToken);
-        let connection: WebApi = new azdev.WebApi(`https://dev.azure.com/${organization}`, authHandler);
+        let connection: WebApi = new azdev.WebApi(organizationUri, authHandler);
         this.releaseClient = await connection.getReleaseApi();
         this.workItemClient = await connection.getWorkItemTrackingApi();
         return this;
